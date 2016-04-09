@@ -13,37 +13,37 @@ Use *any* online search engine to lookup the selected text.
 
 Here are some typical use cases for OnlineSearch:
 
-<figure>
+<p><figure>
     <figcaption align="center">Pre-defined search engines</figcaption>
     <img src='screenshot/01.png'>
-</figure>
+</figure></p>
 
-<figure>
+<p><figure>
     <figcaption align="center">Adding a shortcut to show OnlineSearch's popup menu</figcaption>
     <img src='screenshot/02.png'>
-</figure>
+</figure></p>
 
-<figure>
+<p><figure>
     <figcaption align="center">Popup menu</figcaption>
     <img src='screenshot/03.png'>
-</figure>
+</figure></p>
 
-<figure>
+<p><figure>
     <figcaption align="center">Settings</figcaption>
     <img src='screenshot/04.png'>
-</figure>
+</figure></p>
 
-<figure>
+<p><figure>
     <figcaption align="center">Adding a new search engine</figcaption>
     <img src='screenshot/05.png'>
-</figure>
+</figure></p>
 
-<figure>
+<p><figure>
     <figcaption align="center">Adding a shortcut to launch a particular search engine</figcaption>
     <img src='screenshot/06.png'>
-</figure>
+</figure></p>
 
-<figure>
+<p><figure>
     <figcaption align="center">Popup menu showing the new shortcut</figcaption>
     <img src='screenshot/07.png'>
-</figure>
+</figure></p>
