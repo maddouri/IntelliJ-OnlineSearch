@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>io.github.maddouri.intellij.OnlineSearch</id>
     <name>OnlineSearch</name>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <vendor url="https://github.com/maddouri/IntelliJ-OnlineSearch"/>
 
     <description><![CDATA[
@@ -11,8 +11,8 @@
               <li>Compatible with all IntelliJ-based IDEs</li>
               <li>Add custom search engines' URLs in (Settings | Other settings | OnlineSearch)</li>
               <li>Launch the search from the editor's context menu (Select text | Right-click | OnlineSearch | Select a search engine)</li>
-              <li>Map a search engine to keyboard shortcut (Settings | Keymap | &lt;search engine name&gt;)</li>
-              <li>Map a search engine to keyboard shortcut (Settings | Keymap | OnlineSearch)</li>
+              <li>Map a search engine to a keyboard shortcut (Settings | Keymap | &lt;search engine name&gt;)</li>
+              <li>Pop up the search engine list with a keyboard shortcut (Settings | Keymap | OnlineSearch)</li>
               <li>Out-of-the-box support for Google, Github, GrepCode CppReference, and others (Ability to add/remove/reorder any number of search engines)</li>
           </ul>
       </p>
@@ -20,6 +20,7 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li>Fix the plugin description</li>
             <li>Initial release</li>
         </ul>
     ]]>
