@@ -23,8 +23,12 @@ import java.util.ArrayList;
  */
 public class SettingsConfigurable implements Configurable {
 
-    private class MySettingsPanel extends JPanel {
+    /** The actual GUI panel for the settings
+     */
+    private class SettingsPanel extends JPanel {
 
+        /** A single (up | down | engine name | engine url | remove) entry in the settings panel
+         */
         private class SearchEngineEntry extends JPanel {
             public final JButton    up   = new JButton(AllIcons.Actions.MoveUp);
             public final JButton    down = new JButton(AllIcons.Actions.MoveDown);
@@ -78,7 +82,7 @@ public class SettingsConfigurable implements Configurable {
                 rem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        MySettingsPanel.this.removeSearchEngineEntry(SearchEngineEntry.this);
+                        SettingsPanel.this.removeSearchEngineEntry(SearchEngineEntry.this);
                         SettingsConfigurable.this.setModified(true);
                     }
                 });
@@ -156,7 +160,9 @@ public class SettingsConfigurable implements Configurable {
             }
         }
 
-        public class SearchEngninePanel extends JPanel {
+        /** Container for the list of {@link io.github.maddouri.intellij.OnlineSearch.ui.SettingsConfigurable.SettingsPanel.SearchEngineEntry}'s
+         */
+        public class SearchEnginePanel extends JPanel {
 
             public void cleanup() {
 
@@ -198,7 +204,7 @@ public class SettingsConfigurable implements Configurable {
                 ArrayList<PluginSettings.SearchEngine> searchEngines = new ArrayList<>();
 
                 for (final Component component : searchEnginePanel.getComponents()) {
-                    final SearchEngineEntry entry = (MySettingsPanel.SearchEngineEntry) component;
+                    final SearchEngineEntry entry = (SettingsPanel.SearchEngineEntry) component;
 
                     final String name = entry.name.getText();
                     final String url = entry.url.getText();
@@ -224,10 +230,10 @@ public class SettingsConfigurable implements Configurable {
                     "<li>Use one underscore \"<b>_</b>\" before the <em>\"shortcut letter\"</em> in the engine name</li>" +
                 "</ul>" +
             "</html>");
-        private SearchEngninePanel searchEnginePanel     = new SearchEngninePanel();
+        private SearchEnginePanel searchEnginePanel     = new SearchEnginePanel();
         private JButton            addSearchEngineButton = new JButton("Add Search Engine", AllIcons.General.Add);
 
-        public MySettingsPanel(final ArrayList<PluginSettings.SearchEngine> searchEngines) {
+        public SettingsPanel(final ArrayList<PluginSettings.SearchEngine> searchEngines) {
             super();
             setLayout(new BorderLayout());
 
@@ -287,9 +293,10 @@ public class SettingsConfigurable implements Configurable {
         }
     }
 
+    /// SettingsConfigurable
 
-    private MySettingsPanel thePanel = null;
-    private boolean modified = false;
+    private SettingsPanel thePanel = null;
+    private boolean       modified = false;
 
     /// Configurable
 
@@ -311,7 +318,7 @@ public class SettingsConfigurable implements Configurable {
 
         PluginSettings settings = PluginSettings.getInstance();
 
-        thePanel = new MySettingsPanel(settings.searchEngines);
+        thePanel = new SettingsPanel(settings.searchEngines);
         modified = false;
 
         return thePanel;
@@ -333,7 +340,7 @@ public class SettingsConfigurable implements Configurable {
         settings.searchEngines.clear();
         settings.searchEngines = thePanel.getSearchEngines();
 
-        LaunchSearchActionRegistration.reloadComponent();
+        LaunchSearchActionRegistration.reloadComponent();  // @TODO there should a "better" way of reloading the settings...
 
         modified = false;
     }

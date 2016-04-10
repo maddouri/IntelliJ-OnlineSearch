@@ -46,33 +46,63 @@ public class LaunchSearchAction extends AnAction {
         // Set visibility only in case of an existing project, an editor and a selection
         e.getPresentation().setVisible(project != null
                                        && editor != null
-                                       && editor.getSelectionModel().hasSelection());
+                                       && editor.getSelectionModel().hasSelection(true));
+        //e.getPresentation().setVisible(true);
     }
 
     @Override
     public void actionPerformed(final AnActionEvent e) {
+        final String selectedText = getText(e);
+        launchSearch(selectedText);
+    }
+
+    private String getText(final AnActionEvent e) {
+
+        // @TODO add ability to get data from list-type views -- e.g. 1:Project, 7:Structure, Favorites, 6:TODO...
+        try {
+            return getText_fromEditor(e);
+        } catch (Exception | AssertionError ex) {
+            Messages.showMessageDialog("Error in \"" + e.getPlace() + "\"\n" + ex.toString(),
+                                       "Error When Launching the Browser",
+                                       Messages.getErrorIcon());
+            System.err.println("Error When Launching the Browser:\n" +
+                               "\tError in \"" + e.getPlace() + "\"\n\t" + ex.toString());
+            return null;
+        }
+    }
+
+    private String getText_fromEditor(final AnActionEvent e) {
         // http://www.jetbrains.org/intellij/sdk/docs/tutorials/editor_basics/working_with_text.html
 
-        // Get all the required data from data keys
-        final Editor  editor  = e.getRequiredData(CommonDataKeys.EDITOR);
-        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        // get the editor
+        final Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
 
-        // Access document, caret, and selection
-        final String selectedText = editor.getSelectionModel().getSelectedText(true);
-        assert selectedText != null;
+        // access selection
+        return editor.getSelectionModel().getSelectedText(true);
+    }
+
+    private void launchSearch(final String query) {
+
+        if (query == null) {
+            Messages.showMessageDialog("query == null",
+                                       "Error When Launching the Browser",
+                                       Messages.getErrorIcon());
+            System.err.println("Error When Launching the Browser: query == null");
+            return;
+        }
 
         try {
-            final String encodedQuery = URLEncoder.encode(selectedText, "UTF-8");
+            final String encodedQuery = URLEncoder.encode(query, "UTF-8");
             final String uriString    = url.replace(PluginSettings.SEARCH_QUERY_PLACEHOLDER,
                                                     encodedQuery);
 
             BrowserLauncher.getInstance().open(uriString);
 
         } catch (IOException ex) {
-            Messages.showMessageDialog(project,
-                                       ex.toString(),
+            Messages.showMessageDialog(ex.toString(),
                                        "Error When Launching the Browser",
                                        Messages.getErrorIcon());
+            System.err.println("Error When Launching the Browser: " + ex.toString());
         }
     }
 }

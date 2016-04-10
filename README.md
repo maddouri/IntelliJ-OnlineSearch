@@ -2,14 +2,19 @@
 
 [Download From Jetbrains' Plugin Repository](https://plugins.jetbrains.com/plugin/8298)
 
-Use *any* online search engine to lookup the selected text.
-
-* Compatible with all IntelliJ-based IDEs
-* Add custom search engines' URLs in (Settings | Other settings | OnlineSearch)
-* Launch the search from the editor's context menu (Select text | Right-click | OnlineSearch | Select a search engine)
-* Map a search engine to a keyboard shortcut (Settings | Keymap | &lt;search engine name&gt;)
-* Pop up the search engine list with a keyboard shortcut (Settings | Keymap | OnlineSearch)
-* Out-of-the-box support for Google, Github, GrepCode CppReference, and others (Ability to add/remove/reorder any number of search engines)
+<p>Search the selected text using <b>any</b> online search engine.</p>
+<p>
+  <ul type="disc">
+      <li>Compatible with all IntelliJ-based IDEs</li>
+      <li>Add custom search engines' URLs in (Settings | Other settings | OnlineSearch)</li>
+      <li>Launch the search from the editor's context menu (Select text | Right-click | OnlineSearch | Select a search engine)</li>
+      <li>Map a search engine to a keyboard shortcut (Settings | Keymap | &lt;search engine name&gt;)</li>
+      <li>Pop up the search engine list with a keyboard shortcut (Settings | Keymap | OnlineSearch)</li>
+      <li>Works with other IDE "views" that have text areas (e.g. Diff, Debugger Console, Run Console, etc.)</li>
+      <li>If you don't see the context menu entry, try a keyboard shortcut to show OnlineSearch's popup</li>
+      <li>Out-of-the-box support for Google, Github, GrepCode, CppReference, and others (Ability to add/remove/reorder any number of search engines)</li>
+  </ul>
+</p>
 
 Here are some typical use cases for OnlineSearch:
 
