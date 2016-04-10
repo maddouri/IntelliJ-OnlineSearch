@@ -1,19 +1,21 @@
 <idea-plugin version="2">
     <id>io.github.maddouri.intellij.OnlineSearch</id>
     <name>OnlineSearch</name>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <vendor url="https://github.com/maddouri/IntelliJ-OnlineSearch"/>
 
     <description><![CDATA[
-      <p>Use <b>any</b> online search engine to lookup the selected text.</p>
+      <p>Search the selected text using <b>any</b> online search engine.</p>
       <p>
-          <ul>
+          <ul type="disc">
               <li>Compatible with all IntelliJ-based IDEs</li>
               <li>Add custom search engines' URLs in (Settings | Other settings | OnlineSearch)</li>
               <li>Launch the search from the editor's context menu (Select text | Right-click | OnlineSearch | Select a search engine)</li>
               <li>Map a search engine to a keyboard shortcut (Settings | Keymap | &lt;search engine name&gt;)</li>
               <li>Pop up the search engine list with a keyboard shortcut (Settings | Keymap | OnlineSearch)</li>
-              <li>Out-of-the-box support for Google, Github, GrepCode CppReference, and others (Ability to add/remove/reorder any number of search engines)</li>
+              <li>Works with other IDE "views" that have text areas (e.g. Diff, Debugger Console, Run Console, etc.)</li>
+              <li>If you don't see the context menu entry, try a keyboard shortcut to show OnlineSearch's popup</li>
+              <li>Out-of-the-box support for Google, Github, GrepCode, CppReference, and others (Ability to add/remove/reorder any number of search engines)</li>
           </ul>
       </p>
     ]]></description>
@@ -53,14 +55,75 @@
                text="Online_Search"
                description="Choose an engine to search for the selected code"
                popup="true">
+
+            <!--
+            @TODO add the action group to the terminal view
+            @see NewSession/CloseSession in intellij/idea-community/plugins/terminal/src/org/jetbrains/plugins/terminal/TerminalView.java
+            -->
+
+            <!-- code editor -->
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+
+            <!-- intellij/idea/community/2016.1.1/lib/resources.jar!/idea\PlatformActions.xml -->
+            <!-- diff window -->
+            <add-to-group group-id="Diff.EditorPopupMenu" anchor="first"/>
+            <add-to-group group-id="Diff.ViewerPopupMenu" anchor="first"/>
+            <!-- debugger console -->
+            <add-to-group group-id="ConsoleEditorPopupMenu" anchor="first"/>
+
+            <!-- intellij/idea/community/2016.1.1/lib/resources.jar -->
+            <!-- most other views -->
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+            <add-to-group group-id="CompilerErrorViewPopupMenu"/>
+            <add-to-group group-id="FavoritesViewPopupMenu"/>
+            <add-to-group group-id="ScopeViewPopupMenu"/>
+            <add-to-group group-id="StructureViewPopupMenu"/>
+            <add-to-group group-id="ChangesViewPopupMenu"/>
+            <add-to-group group-id="CallHierarchyPopupMenu"/>
+
+            <!--
+            <add-to-group group-id="ProjectViewPopupMenuModifyGroup"/>
+            <add-to-group group-id="ConsoleView.PopupMenu"/>
+            <add-to-group group-id="ProjectViewPopupMenuRefactoringGroup"/>
+            <add-to-group group-id="ProjectViewPopupMenuRunGroup"/>
+            <add-to-group group-id="ProjectViewPopupMenuSettingsGroup"/>
+
+            <add-to-group group-id="Diff.EditorGutterPopupMenu" anchor="first"/>
+            <add-to-group group-id="EditorTabPopupMenu" anchor="first"/>
+            <add-to-group group-id="EditorGutterPopupMenu" anchor="first"/>
+
+            <add-to-group group-id="CommanderPopupMenu"/>
+            <add-to-group group-id="EditorGutterVcsPopupMenu"/>
+            <add-to-group group-id="EditorLangPopupMenu"/>
+            <add-to-group group-id="EditorPopupMenu"/>
+            <add-to-group group-id="EditorPopupMenu.GoTo"/>
+            <add-to-group group-id="EditorPopupMenu.Run"/>
+            <add-to-group group-id="EditorPopupMenu1"/>
+            <add-to-group group-id="EditorPopupMenu1.FindRefactor"/>
+            <add-to-group group-id="EditorPopupMenu2"/>
+            <add-to-group group-id="EditorPopupMenu3"/>
+            <add-to-group group-id="EditorPopupMenuDebug"/>
+            <add-to-group group-id="EditorPopupMenuDebugJava"/>
+            <add-to-group group-id="EditorTabPopupMenu"/>
+            <add-to-group group-id="EditorTabPopupMenuEx"/>
+            <add-to-group group-id="JavaMethodHierarchyPopupMenu"/>
+            <add-to-group group-id="MethodHierarchyPopupMenu"/>
+            <add-to-group group-id="NavbarPopupMenu"/>
+            <add-to-group group-id="ShelvedChangesPopupMenu"/>
+            <add-to-group group-id="TestStatisticsTablePopupMenu"/>
+            <add-to-group group-id="TestTreePopupMenu"/>
+            <add-to-group group-id="TypeHierarchyPopupMenu"/>
+            -->
+
         </group>
 
         <group id="OnlineSearch.EditorActions.ShowSearchEngines"
                text="Online_Search"
                description="Choose an engine to search for the selected code"
                popup="true">
+            <!-- this is mainly to allow assigning a keyboard shortcut to show the list of search engines -->
             <add-to-group group-id="EditorActions" anchor="first"/>
+
             <action id="OnlineSearch.EditorActions.ShowSearchEnginesAction" class="io.github.maddouri.intellij.OnlineSearch.action.ShowSearchEnginesAction" text="Online_Search" description="A test menu item"/>
         </group>
     </actions>
