@@ -1,13 +1,13 @@
 <idea-plugin version="2">
     <id>io.github.maddouri.intellij.OnlineSearch</id>
     <name>OnlineSearch</name>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <vendor url="https://github.com/maddouri/IntelliJ-OnlineSearch"/>
 
     <description><![CDATA[
       <p>Search the selected text using <b>any</b> online search engine.</p>
       <p>
-          <ul type="disc">
+          <ul>
               <li>Compatible with all IntelliJ-based IDEs</li>
               <li>Add custom search engines' URLs in (Settings | Other settings | OnlineSearch)</li>
               <li>Launch the search from the editor's context menu (Select text | Right-click | OnlineSearch | Select a search engine)</li>
@@ -21,10 +21,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <ul type="disc">
-            <li>Add OnlineSearch to other IDE views</li>
-            <li>Fix the plugin description</li>
-            <li>Initial release</li>
+        <ul>
+            <li>Fix Issue <a href="https://github.com/maddouri/IntelliJ-OnlineSearch/issues/1">#1 (if url has #)</a>: it is now possible to use a custom "query string placeholder" for each search engine</li>
         </ul>
     ]]>
     </change-notes>
