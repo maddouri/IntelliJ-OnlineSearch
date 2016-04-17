@@ -22,7 +22,7 @@ public class LaunchSearchActionRegistration implements ApplicationComponent {
     }
 
     private static String getActionId(LaunchSearchAction a) {
-        return "LaunchSearchAction" + a.name;
+        return "LaunchSearchAction" + a.searchEngine.name;
     }
 
     // Returns the component name (any unique string value).
@@ -44,7 +44,7 @@ public class LaunchSearchActionRegistration implements ApplicationComponent {
         //menuManager.addSeparator();
 
         for (PluginSettings.SearchEngine engine : settings.searchEngines) {
-            LaunchSearchAction action = new LaunchSearchAction(engine.name, engine.url);
+            LaunchSearchAction action = new LaunchSearchAction(engine);
 
             // Passes an instance of your custom TextBoxes class to the registerAction method of the ActionManager class.
             am.registerAction(getActionId(action), action);

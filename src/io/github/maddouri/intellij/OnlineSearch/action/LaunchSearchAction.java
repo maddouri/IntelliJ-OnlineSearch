@@ -12,27 +12,22 @@ import io.github.maddouri.intellij.OnlineSearch.state.PluginSettings;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-/** Uses the provided {@link io.github.maddouri.intellij.OnlineSearch.action.LaunchSearchAction#url} to search for the selected code.
+/** Uses the provided {@link io.github.maddouri.intellij.OnlineSearch.action.LaunchSearchAction#searchEngine}
+ *  to search for the selected code.
+ *
  *  Launches the web browser.
  *
  *  This action is registered by {@link io.github.maddouri.intellij.OnlineSearch.action.LaunchSearchActionRegistration}
  */
 public class LaunchSearchAction extends AnAction {
 
-    /** The search engine's display name
+    /** The search engine
      */
-    public final String name;
-    /** Search engine's URL.
-     *  Must contain the {@link io.github.maddouri.intellij.OnlineSearch.state.PluginSettings.SEARCH_QUERY_PLACEHOLDER}
-     *  substring.
-     */
-    public final String url;
+    public final PluginSettings.SearchEngine searchEngine;
 
-
-    public LaunchSearchAction(final String name, final String url) {
-        super(name);
-        this.name = name;
-        this.url  = url;
+    public LaunchSearchAction(final PluginSettings.SearchEngine searchEngine) {
+        super(searchEngine.name);
+        this.searchEngine = searchEngine;
     }
 
     @Override
@@ -93,8 +88,8 @@ public class LaunchSearchAction extends AnAction {
 
         try {
             final String encodedQuery = URLEncoder.encode(query, "UTF-8");
-            final String uriString    = url.replace(PluginSettings.SEARCH_QUERY_PLACEHOLDER,
-                                                    encodedQuery);
+            final String uriString    = searchEngine.url.replace(searchEngine.queryPlaceholder,
+                                                                 encodedQuery);
 
             BrowserLauncher.getInstance().open(uriString);
 
