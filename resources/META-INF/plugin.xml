@@ -21,7 +21,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <ul>
+        <ul type="disc">
+            <li>Add OnlineSearch to other IDE views</li>
             <li>Fix the plugin description</li>
             <li>Initial release</li>
         </ul>

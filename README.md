@@ -59,3 +59,9 @@ Here are some typical use cases for OnlineSearch:
     <br>
     <img align="center" src='screenshot/07.png'>
 </figure></p>
+
+<p><figure>
+    <figcaption align="center">Launch an online search from other text areas in the IDE</figcaption>
+    <br>
+    <img align="center" src='screenshot/08.png'>
+</figure></p>
