@@ -8,6 +8,8 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /** The plugin's settings. (mainly the list of search engines)
@@ -47,6 +49,16 @@ public class PluginSettings implements PersistentStateComponent<PluginSettings> 
             this.name             = name;
             this.url              = url;
             this.queryPlaceholder = queryPlaceholder;
+        }
+
+        public String generateSearchUri(final String query) throws UnsupportedEncodingException {
+            final String encodedQuery = URLEncoder.encode(query, "UTF-8");
+
+            if (queryPlaceholder == null || queryPlaceholder.equals("")) {  // fix for the 1.1.1 bug causing a ill-formed URI to be generated
+                return url.replace(DEFAULT_QUERY_PLACEHOLDER, encodedQuery);
+            } else {
+                return url.replace(queryPlaceholder, encodedQuery);
+            }
         }
     }
 

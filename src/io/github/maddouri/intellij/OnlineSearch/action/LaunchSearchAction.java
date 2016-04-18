@@ -87,9 +87,7 @@ public class LaunchSearchAction extends AnAction {
         }
 
         try {
-            final String encodedQuery = URLEncoder.encode(query, "UTF-8");
-            final String uriString    = searchEngine.url.replace(searchEngine.queryPlaceholder,
-                                                                 encodedQuery);
+            final String uriString = searchEngine.generateSearchUri(query);
 
             BrowserLauncher.getInstance().open(uriString);
 
