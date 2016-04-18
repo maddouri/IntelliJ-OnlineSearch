@@ -33,15 +33,21 @@ public class SettingsConfigurable implements Configurable {
             public final JButton    up   = new JButton(AllIcons.Actions.MoveUp);
             public final JButton    down = new JButton(AllIcons.Actions.MoveDown);
 
-            public final JTextField name = new JTextField("", 1);  // apparently, if I don't add the second argument (any number), the GridBagLayout will mess things up :)
-            public final JTextField url  = new JTextField("", 1);
+            public final JTextField name             = new JTextField("", 1);  // apparently, if I don't add the second argument (any number), the GridBagLayout will mess things up :)
+            public final JTextField url              = new JTextField("", 1);
+            public final JTextField queryPlaceholder = new JTextField("", 1);
 
             public final JButton    rem  = new JButton("Remove", AllIcons.Actions.Delete);
 
-            public SearchEngineEntry(String nameStr, String urlStr) {
+            public SearchEngineEntry(final PluginSettings.SearchEngine searchEngine) {
                 super();
+
+                /// prepare the layout
+
                 GridBagLayout layout = new GridBagLayout();
                 setLayout(layout);
+
+                /// add the elements + action listeners
 
                 up.addActionListener(new ActionListener() {
                     @Override
@@ -79,6 +85,11 @@ public class SettingsConfigurable implements Configurable {
                     @Override public void keyPressed(KeyEvent e)  { SettingsConfigurable.this.setModified(true); }
                     @Override public void keyReleased(KeyEvent e) { SettingsConfigurable.this.setModified(true); }
                 });
+                queryPlaceholder.addKeyListener(new KeyListener() {
+                    @Override public void keyTyped(KeyEvent e)    { SettingsConfigurable.this.setModified(true); }
+                    @Override public void keyPressed(KeyEvent e)  { SettingsConfigurable.this.setModified(true); }
+                    @Override public void keyReleased(KeyEvent e) { SettingsConfigurable.this.setModified(true); }
+                });
                 rem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -86,6 +97,8 @@ public class SettingsConfigurable implements Configurable {
                         SettingsConfigurable.this.setModified(true);
                     }
                 });
+
+                /// configure the layout
 
                 //name.setMaximumSize(new Dimension(Integer.MAX_VALUE, name.getPreferredSize().height));
                 //url.setMaximumSize(new Dimension(Integer.MAX_VALUE, url.getPreferredSize().height));
@@ -122,13 +135,30 @@ public class SettingsConfigurable implements Configurable {
                 add(url, ctr);
 
                 ctr.gridx = gridx++;
+                ctr.weightx = 0.5;
+                add(queryPlaceholder, ctr);
+
+                ctr.gridx = gridx++;
                 ctr.weightx = 0.2;
                 add(rem, ctr);
 
                 this.setMaximumSize(new Dimension(Integer.MAX_VALUE, this.getPreferredSize().height));
 
-                name.setText(nameStr);
-                url.setText(urlStr);
+                /// init the text fields
+
+                if (searchEngine != null) {  // loading from the config file
+                    name.setText(searchEngine.name);
+                    url.setText(searchEngine.url);
+                    if (searchEngine.queryPlaceholder == null || searchEngine.queryPlaceholder.equals("")) {  // compatibility with pre-1.1.1
+                        queryPlaceholder.setText(PluginSettings.DEFAULT_QUERY_PLACEHOLDER);
+                    } else {
+                        queryPlaceholder.setText(searchEngine.queryPlaceholder);
+                    }
+                } else {  // "add search engine" button pressed
+                    name.setText("");
+                    url.setText("");
+                    queryPlaceholder.setText("");//PluginSettings.DEFAULT_QUERY_PLACEHOLDER);
+                }
 
             }
 
@@ -177,8 +207,8 @@ public class SettingsConfigurable implements Configurable {
                 SettingsConfigurable.this.setModified(true);
             }
 
-            public void addSearchEngineEntry(final String name, final String url) {
-                add(new SearchEngineEntry(name, url));
+            public void addSearchEngineEntry(final PluginSettings.SearchEngine searchEngine) {
+                add(new SearchEngineEntry(searchEngine));
                 SettingsConfigurable.this.setModified(true);
             }
 
@@ -190,7 +220,7 @@ public class SettingsConfigurable implements Configurable {
 
             public void addSearchEngines(final ArrayList<PluginSettings.SearchEngine> searchEngines) {
                 for (PluginSettings.SearchEngine engine : searchEngines) {
-                    addSearchEngineEntry(engine.name, engine.url);
+                    addSearchEngineEntry(engine);
                 }
                 SettingsConfigurable.this.setModified(true);
             }
@@ -206,12 +236,14 @@ public class SettingsConfigurable implements Configurable {
                 for (final Component component : searchEnginePanel.getComponents()) {
                     final SearchEngineEntry entry = (SettingsPanel.SearchEngineEntry) component;
 
-                    final String name = entry.name.getText();
-                    final String url = entry.url.getText();
+                    final String name             = entry.name.getText();
+                    final String url              = entry.url.getText();
+                    final String queryPlaceholder = entry.queryPlaceholder.getText();
 
-                    if (name != null && !name.equals("")) {
-//                        searchEngines.put(name, url);
-                        searchEngines.add(new PluginSettings.SearchEngine(name, url));
+                    if (   name             != null && !name.equals("")
+                        && url              != null && !url.equals("")
+                        && queryPlaceholder != null && !queryPlaceholder.equals("")) {
+                        searchEngines.add(new PluginSettings.SearchEngine(name, url, queryPlaceholder));
                     }
 
                 }
@@ -226,7 +258,7 @@ public class SettingsConfigurable implements Configurable {
             "<html>" +
                 "<p>Add/Remove Search Engines</p>" +
                 "<ul>" +
-                    "<li>Use \"<b>" + PluginSettings.SEARCH_QUERY_PLACEHOLDER + "</b>\" as the query placeholder</li>" +
+                    "<li>Use \"<b>" + PluginSettings.DEFAULT_QUERY_PLACEHOLDER + "</b>\" or <b>any other string</b> as the query placeholder</li>" +
                     "<li>Use one underscore \"<b>_</b>\" before the <em>\"shortcut letter\"</em> in the engine name</li>" +
                 "</ul>" +
             "</html>");
@@ -251,7 +283,7 @@ public class SettingsConfigurable implements Configurable {
             addSearchEngineButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    addSearchEngineEntry("", "");
+                    addSearchEngineEntry(null);
                 }
             });
             add(addSearchEngineButton, BorderLayout.PAGE_END);
@@ -270,8 +302,8 @@ public class SettingsConfigurable implements Configurable {
             this.removeAll();
         }
 
-        public void addSearchEngineEntry(final String name, final String url) {
-            searchEnginePanel.addSearchEngineEntry(name, url);
+        public void addSearchEngineEntry(final PluginSettings.SearchEngine searchEngine) {
+            searchEnginePanel.addSearchEngineEntry(searchEngine);
         }
 
         public void removeSearchEngineEntry(final SearchEngineEntry entry) {
