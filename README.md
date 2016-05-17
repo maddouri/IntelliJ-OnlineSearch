@@ -1,6 +1,6 @@
-# OnlineSearch
+# OnlineSearch [![Download](https://img.shields.io/badge/download-Jetbrains%20Plugin%20Repository-blue.svg?style=flat-square)](https://plugins.jetbrains.com/plugin/8298)
 
-[Download From Jetbrains' Plugin Repository](https://plugins.jetbrains.com/plugin/8298)
+[![License](https://img.shields.io/github/license/maddouri/IntelliJ-OnlineSearch.svg?style=flat-square)](LICENSE)
 
 <p>Search the selected text using <b>any</b> online search engine.</p>
 <p>
