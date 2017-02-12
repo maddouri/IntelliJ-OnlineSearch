@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.ui.Messages;
 import io.github.maddouri.intellij.OnlineSearch.state.PluginSettings;
 
@@ -19,7 +19,7 @@ import java.net.URLEncoder;
  *
  *  This action is registered by {@link io.github.maddouri.intellij.OnlineSearch.action.LaunchSearchActionRegistration}
  */
-public class LaunchSearchAction extends AnAction {
+public class LaunchSearchAction extends AnAction implements DumbAware {
 
     /** The search engine
      */
@@ -35,14 +35,11 @@ public class LaunchSearchAction extends AnAction {
         // http://www.jetbrains.org/intellij/sdk/docs/tutorials/editor_basics/working_with_text.html
 
         // Get required data keys
-        final Project project = e.getData(CommonDataKeys.PROJECT);
         final Editor editor   = e.getData(CommonDataKeys.EDITOR);
 
-        // Set visibility only in case of an existing project, an editor and a selection
-        e.getPresentation().setVisible(project != null
-                                       && editor != null
+        // Set visibility only in case of an editor and a selection
+        e.getPresentation().setVisible(editor != null
                                        && editor.getSelectionModel().hasSelection(true));
-        //e.getPresentation().setVisible(true);
     }
 
     @Override
